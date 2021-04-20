@@ -24,3 +24,13 @@ func TestArrayTravel(t *testing.T)  {
 		t.Log(index,item)
 	}
 }
+
+func TestArraySection(t *testing.T)  {
+	a:= [...]int {1,2,3,4,5}
+	// 不支持负数下标
+	t.Log(a[1:2])
+	t.Log(a[1:3])
+	t.Log(a[1:len(a)])
+	t.Log(a[1:])
+	t.Log(a[:2])
+}
