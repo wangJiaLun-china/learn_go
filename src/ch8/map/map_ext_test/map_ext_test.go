@@ -1,6 +1,8 @@
 package map_ext_test
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestMapWithFunValue(t *testing.T)  {
 	m:= map[int]func(op int)int{}
