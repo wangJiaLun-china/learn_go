@@ -1,41 +1,34 @@
 package cancel_by_close
 
 import (
+	"context"
 	"fmt"
 	"testing"
 	"time"
 )
 
-func isCancelled(cancelChan chan struct{}) bool {
+func isCancelled(ctx context.Context) bool {
 	select {
-	case <-cancelChan:
+	case <-ctx.Done():
 		return true
 	default:
 		return false
 	}
 }
 
-func cancel_1(cancelChan chan struct{}) {
-	cancelChan <- struct{}{}
-}
-
-func cancel_2(cancelChan chan struct{}) {
-	close(cancelChan)
-}
-
 func TestCancel(t *testing.T) {
-	cancelChan := make(chan struct{}, 0)
+	ctx, cancel := context.WithCancel(context.Background())
 	for i := 0; i < 5; i++ {
-		go func(i int, cancelChan chan struct{}) {
+		go func(i int, ctx context.Context) {
 			for {
-				if isCancelled(cancelChan) {
+				if isCancelled(ctx) {
 					break
 				}
 				time.Sleep(time.Millisecond * 5)
 			}
 			fmt.Println(i, "Cancelled")
-		}(i, cancelChan)
+		}(i, ctx)
 	}
-	cancel_2(cancelChan)
+	cancel()
 	time.Sleep(time.Second * 1)
 }
