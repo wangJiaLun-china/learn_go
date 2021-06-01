@@ -41,11 +41,11 @@ func main() {
 		fmt.Println("conn.Read err: ", err)
 	}
 
-	fmt.Println("Client ======> Server, 长度：", cnt, ", 数据", string(buf[cnt]))
+	fmt.Println("Client ======> Server, 长度：", cnt, ", 数据", string(buf[0:cnt]))
 
 	// 数据处理
 	// func ToUpper(s string) string
-	upperData := strings.ToUpper(string(buf[cnt]))
+	upperData := strings.ToUpper(string(buf[0:cnt]))
 	// Write(b []byte) (n int, err error)
 	cnt, err = conn.Write([]byte(upperData))
 	fmt.Println("Client <===== Server, 长度：", cnt, ", 数据: ", upperData)
